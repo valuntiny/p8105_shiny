@@ -33,10 +33,25 @@ Column {.sidebar}
 ```{r}
 boros = nyc_airbnb %>% distinct(boro) %>% pull()
 
-# selectInput widget
+# selectInput widget 1
 selectInput("boro_choice", # the name for this part
             label = h3("Select boro"), # label for user
-            choices = boros, selected = "Manhattan")
+            choices = boros, selected = "Manhattan") # default selection
+
+# sliderInput widget 2
+max_price = 1000
+min_price = nyc_airbnb %>% distinct(price) %>% min()
+sliderInput("price_range", 
+            label = h3("Choose price range"), 
+            min = min_price, 
+            max = max_price, value = c(100, 400))
+
+# radioButtons widget
+room_choice = nyc_airbnb %>% distinct(room_type) %>% pull()
+radioButtons("room_choice", 
+             label = h3("Choose room type"),
+             choices = room_choice, 
+             selected = "Entire home/apt")
 ```
 
 Column {data-width=650}
@@ -45,7 +60,9 @@ Column {data-width=650}
 ### Chart A
 
 ```{r}
-
+renderPrint({ 
+  input[["boro_choice"]]
+})
 ```
 
 Column {data-width=350}
@@ -54,12 +71,16 @@ Column {data-width=350}
 ### Chart B
 
 ```{r}
-
+renderPrint({ 
+  input[["price_range"]]
+})
 ```
 
 ### Chart C
 
 ```{r}
-
+renderPrint({ 
+  input[["room_choice"]]
+})
 ```
 
